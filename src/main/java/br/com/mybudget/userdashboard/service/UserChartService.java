@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserChartService {
-    UserChartEnvelopeDTO getUserDebts(Long idUser);
+    UserChartEnvelopeDTO  getUserDebts(Long idUser);
 }

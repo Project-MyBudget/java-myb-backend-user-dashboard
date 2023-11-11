@@ -4,13 +4,12 @@ import br.com.mybudget.userdashboard.enuns.UserMaritalStatusEnum;
 import br.com.mybudget.userdashboard.model.dto.ChartDebtsDTO;
 import br.com.mybudget.userdashboard.model.dto.UserChartEnvelopeDTO;
 import br.com.mybudget.userdashboard.model.entity.BudgetEntity;
-import br.com.mybudget.userdashboard.model.entity.UserEntity;
-import br.com.mybudget.userdashboard.repository.UserRepository;
+import br.com.mybudget.userdashboard.repository.BudgetRepository;
 import br.com.mybudget.userdashboard.service.UserChartService;
 import br.com.mybudget.userdashboard.utils.CalculateBudgetPerChildUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;                
 
 import java.util.Objects;
 
@@ -19,26 +18,33 @@ import java.util.Objects;
 public class UserChartServiceImpl implements UserChartService  {
 
     @Autowired
-    private UserRepository userRepository;
+    private BudgetRepository budgetRepository;
 
     @Override
     public UserChartEnvelopeDTO getUserDebts(Long idUser) {
-
-        return null;
+        BudgetEntity budgetEntity = budgetRepository.findByIdUser(idUser);
+        ChartDebtsDTO recommendedChart = getRecommendedChart(budgetEntity);
+        UserChartEnvelopeDTO userChartEnvelopeDTO = new UserChartEnvelopeDTO();
+        userChartEnvelopeDTO.setChartRecommendedDebts(recommendedChart);
+        return userChartEnvelopeDTO;
     }
 
     private ChartDebtsDTO getRecommendedChart(BudgetEntity budget) {
-        ChartDebtsDTO chartDebtsDTO = new ChartDebtsDTO();
-
-        // Arrange
-        // Pensar melhor nessa lógica
         int children = budget.getUser().getChildrenNumber();
-        boolean isSingle =
-                Objects.equals(UserMaritalStatusEnum.SINGLE.getMaritalStatus(), budget.getUser().getCivilStatus());
-        double percentEssentialsDebts =
-                isSingle && children == 0 ? 0.30 : CalculateBudgetPerChildUtils.getBudgetEssentials(children);
+        boolean isSingle = Objects.equals(UserMaritalStatusEnum.SINGLE.getMaritalStatus(), budget.getUser().getCivilStatus());
+        double percentEssentialsDebts = isSingle && children == 0 ? 0.30 : CalculateBudgetPerChildUtils.getBudgetEssentials(children);
 
+        double percentNotEssentialsDebts = (1.0 - percentEssentialsDebts) - 0.30;
+        double percentLeisure = (1.0 - (percentNotEssentialsDebts + percentEssentialsDebts)) - 0.20;
 
-        return null;
+        double percentsOverall = percentLeisure + percentEssentialsDebts + percentNotEssentialsDebts;
+        double percentLimitEconomy = percentsOverall < 1 ? 1 - percentsOverall : 0;
+
+        return ChartDebtsDTO.builder()
+                .essentialsDebts(budget.getBudget() * percentEssentialsDebts)
+                .notEssentialsDebts(budget.getBudget() * percentNotEssentialsDebts)
+                .spendingLimitLeisure(budget.getBudget() * percentLeisure)
+                .spendingLimitEconomy(budget.getBudget() * percentLimitEconomy)
+                .build();
     }
 }
