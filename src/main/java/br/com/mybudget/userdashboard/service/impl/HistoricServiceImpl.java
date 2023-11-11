@@ -32,10 +32,11 @@ public class HistoricServiceImpl implements HistoricService{
 			if (response != null && !response.isEmpty()) {
 
 				List<HistoricLastSixMonthsDTO> listHistoricLastSixMonths = new ArrayList<>();
-				HistoricLastSixMonthsDTO historicLastSixMonthsDto = new HistoricLastSixMonthsDTO();
-
+				
 				for (Object[] row : response) {
 					try {
+						HistoricLastSixMonthsDTO historicLastSixMonthsDto = new HistoricLastSixMonthsDTO();
+						
 						Integer year = (Integer) row[0];
 						Integer month = (Integer) row[1];
 						Double totalValue = (Double) row[2];
