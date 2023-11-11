@@ -1,7 +1,6 @@
 package br.com.mybudget.userdashboard.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 

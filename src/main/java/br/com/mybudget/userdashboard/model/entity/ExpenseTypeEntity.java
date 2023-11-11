@@ -1,0 +1,35 @@
+package br.com.mybudget.userdashboard.model.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
+@Entity
+@Table(name = "TB_EXPENSES_TYPE")
+public class ExpenseTypeEntity {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_EXP_TYPE")
+	private long id;
+	
+	@Column(name = "DESCRIPTION", nullable = true)
+	private String description;
+	
+	@Column(name = "TYPE", nullable = false)
+	private String type;
+}
