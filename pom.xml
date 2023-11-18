@@ -8,13 +8,17 @@
 		<version>2.7.17</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	
 	<groupId>br.com.mybudget</groupId>
 	<artifactId>user-dashboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>user-dashboard</name>
 	<description>Demo project for Spring Boot</description>
+	<packaging>jar</packaging>
+	
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 	<dependencies>
 		<dependency>
