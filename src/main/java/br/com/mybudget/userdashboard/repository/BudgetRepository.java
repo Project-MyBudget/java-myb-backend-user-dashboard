@@ -16,5 +16,10 @@ public interface BudgetRepository extends JpaRepository<BudgetEntity, Long> {
     
     @Query(value = "SELECT (BUDGET + VALUE_SAVED) from TB_BUDGET WHERE ID_BUDGET = ?1", nativeQuery = true)
     BigDecimal getTotalBudgetAmountByIdUser(@Param("id") long id);
+    
+    @Query(
+    		value = "SELECT concat(BUDGET + VALUE_SAVED, '-', VALUE_SAVED) from TB_BUDGET WHERE ID_BUDGET = ?1",
+    		nativeQuery = true)
+    String getTotalBudgetAmountAndValueSavedByIdBudget(@Param("id") long id);
 }
 	

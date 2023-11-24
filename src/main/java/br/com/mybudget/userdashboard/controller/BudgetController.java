@@ -20,17 +20,14 @@ public class BudgetController {
 	private UserChartService userChartService;
 	
 	@GetMapping(value = "/total/{idUser}", produces = "application/json")
-	public ResponseEntity<TotalBudgetDTO> sum(@PathVariable Long idUser) {
+	public ResponseEntity<TotalBudgetDTO> getSumAndSavedValue(@PathVariable Long idUser) {
 		
-		BigDecimal res = userChartService.getTotalBudgetAmount(idUser);
+		TotalBudgetDTO res = userChartService.getTotalBudgetAmount(idUser);
 		
 		if (res == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).body(TotalBudgetDTO
-															.builder()
-															.totalAmount(res)
-															.build());
+		return ResponseEntity.status(HttpStatus.OK).body(res);
 	}
 }
