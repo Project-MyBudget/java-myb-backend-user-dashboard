@@ -1,6 +1,12 @@
 package br.com.mybudget.userdashboard.service.impl;
 
 import br.com.mybudget.userdashboard.enuns.ExpenseTypeEnum;
+import java.math.BigDecimal;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.com.mybudget.userdashboard.enuns.UserMaritalStatusEnum;
 import br.com.mybudget.userdashboard.model.dto.ChartDebtsDTO;
 import br.com.mybudget.userdashboard.model.dto.UserChartEnvelopeDTO;
@@ -10,11 +16,8 @@ import br.com.mybudget.userdashboard.repository.HistoricRepository;
 import br.com.mybudget.userdashboard.service.UserChartService;
 import br.com.mybudget.userdashboard.utils.CalculateBudgetPerChildUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Component
@@ -93,4 +96,16 @@ public class UserChartServiceImpl implements UserChartService {
 
         return chartDebts;
     }
+
+	@Override
+	public BigDecimal getTotalBudgetAmount(Long idUser) {
+		
+		BigDecimal totalBudgetAmount = budgetRepository.getTotalBudgetAmountByIdUser(idUser);
+		if (totalBudgetAmount != null) {
+			log.info("[USER CHART RESOURCE] Founded Budget Amount.");
+			return totalBudgetAmount;	
+		}
+		log.info("[USER CHART RESOURCE] Could not found Budget Amount.");
+		return totalBudgetAmount;
+	}
 }
