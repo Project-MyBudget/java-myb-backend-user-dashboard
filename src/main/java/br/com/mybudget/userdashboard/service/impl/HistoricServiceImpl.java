@@ -19,7 +19,6 @@ public class HistoricServiceImpl implements HistoricService{
 	@Autowired
 	private HistoricRepository expenseRepository;
 	
-	
 	@Override
 	public List<HistoricLastSixMonthsDTO> getHistoricExpenses(long userId) {
 		try {
@@ -45,7 +44,7 @@ public class HistoricServiceImpl implements HistoricService{
 
 						historicLastSixMonthsDto.setMonth(month);
 						historicLastSixMonthsDto.setYear(year);
-						historicLastSixMonthsDto.setTotalValueExpences(totalValue);
+						historicLastSixMonthsDto.setTotalValueExpenses(totalValue);
 
 						listHistoricLastSixMonths.add(historicLastSixMonthsDto);
 

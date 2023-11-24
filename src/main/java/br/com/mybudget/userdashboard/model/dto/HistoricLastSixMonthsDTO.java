@@ -20,5 +20,5 @@ public class HistoricLastSixMonthsDTO {
 
 	private Integer year;
 	private Integer month;
-	private double totalValueExpences;
+	private double totalValueExpenses;
 }
