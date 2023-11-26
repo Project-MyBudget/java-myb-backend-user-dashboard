@@ -1,14 +1,16 @@
 package br.com.mybudget.userdashboard.service.impl;
 
-import br.com.mybudget.userdashboard.enuns.ExpenseTypeEnum;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.mybudget.userdashboard.enuns.ExpenseTypeEnum;
 import br.com.mybudget.userdashboard.enuns.UserMaritalStatusEnum;
 import br.com.mybudget.userdashboard.model.dto.ChartDebtsDTO;
+import br.com.mybudget.userdashboard.model.dto.TotalBudgetDTO;
 import br.com.mybudget.userdashboard.model.dto.UserChartEnvelopeDTO;
 import br.com.mybudget.userdashboard.model.entity.BudgetEntity;
 import br.com.mybudget.userdashboard.repository.BudgetRepository;
@@ -16,8 +18,6 @@ import br.com.mybudget.userdashboard.repository.HistoricRepository;
 import br.com.mybudget.userdashboard.service.UserChartService;
 import br.com.mybudget.userdashboard.utils.CalculateBudgetPerChildUtils;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 @Slf4j
 @Component
@@ -97,15 +97,19 @@ public class UserChartServiceImpl implements UserChartService {
         return chartDebts;
     }
 
-	@Override
-	public BigDecimal getTotalBudgetAmount(Long idUser) {
+    @Override
+	public TotalBudgetDTO getTotalBudgetAmount(Long idUser) {
 		
-		BigDecimal totalBudgetAmount = budgetRepository.getTotalBudgetAmountByIdUser(idUser);
+		String totalBudgetAmount = budgetRepository.getTotalBudgetAmountAndValueSavedByIdBudget(idUser);
 		if (totalBudgetAmount != null) {
 			log.info("[USER CHART RESOURCE] Founded Budget Amount.");
-			return totalBudgetAmount;	
+			return TotalBudgetDTO
+							.builder()
+							.totalBudgetAmount(new BigDecimal(totalBudgetAmount.split("-")[0]))
+							.totalValueSaved(new BigDecimal(totalBudgetAmount.split("-")[1]))
+							.build();	
 		}
 		log.info("[USER CHART RESOURCE] Could not found Budget Amount.");
-		return totalBudgetAmount;
+		return null;
 	}
 }

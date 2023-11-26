@@ -2,14 +2,23 @@ package br.com.mybudget.userdashboard.model.dto;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+@Data
+@Builder
 @Getter
 @Setter
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class TotalBudgetDTO {
 	
-	private BigDecimal totalAmount;
+	private BigDecimal totalBudgetAmount;
+	private BigDecimal totalValueSaved;
 }
