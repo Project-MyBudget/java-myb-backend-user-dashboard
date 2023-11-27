@@ -96,20 +96,4 @@ public class UserChartServiceImpl implements UserChartService {
 
         return chartDebts;
     }
-
-    @Override
-	public TotalBudgetDTO getTotalBudgetAmount(Long idUser) {
-		
-		String totalBudgetAmount = budgetRepository.getTotalBudgetAmountAndValueSavedByIdBudget(idUser);
-		if (totalBudgetAmount != null) {
-			log.info("[USER CHART RESOURCE] Founded Budget Amount.");
-			return TotalBudgetDTO
-							.builder()
-							.totalBudgetAmount(new BigDecimal(totalBudgetAmount.split("-")[0]))
-							.totalValueSaved(new BigDecimal(totalBudgetAmount.split("-")[1]))
-							.build();	
-		}
-		log.info("[USER CHART RESOURCE] Could not found Budget Amount.");
-		return null;
-	}
 }

@@ -8,5 +8,4 @@ import br.com.mybudget.userdashboard.model.dto.UserChartEnvelopeDTO;
 @Service
 public interface UserChartService {
     UserChartEnvelopeDTO  getUserDebts(Long idUser);
-    TotalBudgetDTO getTotalBudgetAmount(Long idUser);
 }

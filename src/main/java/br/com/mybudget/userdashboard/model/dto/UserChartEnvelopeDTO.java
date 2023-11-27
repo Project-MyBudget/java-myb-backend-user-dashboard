@@ -11,5 +11,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UserChartEnvelopeDTO  implements Serializable {
     private ChartDebtsDTO chartRecommendedDebts;
-        private ChartDebtsDTO chartUserDebts;
+    private ChartDebtsDTO chartUserDebts;
 }
