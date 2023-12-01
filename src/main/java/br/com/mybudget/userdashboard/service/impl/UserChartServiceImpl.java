@@ -1,6 +1,5 @@
 package br.com.mybudget.userdashboard.service.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import br.com.mybudget.userdashboard.enuns.ExpenseTypeEnum;
 import br.com.mybudget.userdashboard.enuns.UserMaritalStatusEnum;
 import br.com.mybudget.userdashboard.model.dto.ChartDebtsDTO;
-import br.com.mybudget.userdashboard.model.dto.TotalBudgetDTO;
 import br.com.mybudget.userdashboard.model.dto.UserChartEnvelopeDTO;
 import br.com.mybudget.userdashboard.model.entity.BudgetEntity;
 import br.com.mybudget.userdashboard.repository.BudgetRepository;
