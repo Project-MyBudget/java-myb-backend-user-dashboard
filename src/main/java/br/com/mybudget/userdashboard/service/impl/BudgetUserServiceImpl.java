@@ -17,9 +17,9 @@ public class BudgetUserServiceImpl implements BudgetUserService {
     private BudgetRepository budgetRepository;
 
     @Override
-    public TotalBudgetDTO getTotalBudgetAmount(Long idUser) {
+    public TotalBudgetDTO getTotalBudgetAmount(Long userId) {
 
-        String totalBudgetAmount = budgetRepository.getTotalBudgetAmountAndValueSavedByIdBudget(idUser);
+        String totalBudgetAmount = budgetRepository.getTotalBudgetAmountAndValueSavedByIdBudget(userId);
         if (totalBudgetAmount != null) {
             log.info("[USER CHART RESOURCE] Founded Budget Amount.");
             return TotalBudgetDTO

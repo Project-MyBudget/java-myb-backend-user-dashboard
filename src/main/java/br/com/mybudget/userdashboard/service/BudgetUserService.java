@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BudgetUserService {
-    TotalBudgetDTO getTotalBudgetAmount(Long idUser);
+    TotalBudgetDTO getTotalBudgetAmount(Long userId);
 }

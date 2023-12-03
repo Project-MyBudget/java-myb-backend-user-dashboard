@@ -16,7 +16,7 @@ public class ChartController {
 
     @GetMapping(value = "/charts/{idUser}")
     public ResponseEntity<UserChartEnvelopeDTO> getChartsDashboard(@PathVariable long idUser) {
-        UserChartEnvelopeDTO userChartEnvelopeDTO = userChartService.getUserDebts(idUser);
+         UserChartEnvelopeDTO userChartEnvelopeDTO = userChartService.getUserDebts(idUser);
         return ResponseEntity.ok(userChartEnvelopeDTO);
     }
 
