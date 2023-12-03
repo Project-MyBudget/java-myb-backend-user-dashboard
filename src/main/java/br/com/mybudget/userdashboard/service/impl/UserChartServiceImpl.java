@@ -3,6 +3,7 @@ package br.com.mybudget.userdashboard.service.impl;
 import java.util.List;
 import java.util.Objects;
 
+import br.com.mybudget.userdashboard.model.BudgetDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,10 +30,22 @@ public class UserChartServiceImpl implements UserChartService {
 
     @Override
     public UserChartEnvelopeDTO getUserDebts(Long userId) {
+        BudgetDetails budgetDetails = new BudgetDetails();
         BudgetEntity budgetEntity = budgetRepository.findByIdUser(userId);
+        List<Object[]> objBudgetDetails = budgetRepository.getTotalBudgetDetailsById(userId);
 
-        ChartDebtsDTO recommendedChart = getRecommendedChart(budgetEntity);
-        ChartDebtsDTO userChart = getUserChart(budgetEntity, userId);
+        for (Object[] budget : objBudgetDetails) {
+            log.info("{} - {} ", budget, budget[1]);
+            budgetDetails = BudgetDetails.builder()
+                    .totalBudgetAmount((Double) budget[0])
+                    .civilStatus((Character) budget[1])
+                    .childNumber((Integer) budget[2])
+                    .spendingLimitEconomy((Double) budget[3])
+                    .build();
+        }
+
+        ChartDebtsDTO recommendedChart = getRecommendedChart(budgetDetails);
+        ChartDebtsDTO userChart = getUserChart(budgetDetails, userId);
 
         UserChartEnvelopeDTO userChartEnvelopeDTO = new UserChartEnvelopeDTO();
         userChartEnvelopeDTO.setChartRecommendedDebts(recommendedChart);
@@ -40,11 +53,11 @@ public class UserChartServiceImpl implements UserChartService {
         return userChartEnvelopeDTO;
     }
 
-    private ChartDebtsDTO getRecommendedChart(BudgetEntity budget) {
+    private ChartDebtsDTO getRecommendedChart(BudgetDetails budget) {
         try {
             log.info("[INFO] Creating recommended chart to user");
-            int children = budget.getUser().getChildrenNumber();
-            boolean isSingle = Objects.equals(UserMaritalStatusEnum.SINGLE.getMaritalStatus(), budget.getUser().getCivilStatus());
+            int children = budget.getChildNumber();
+            boolean isSingle = budget.getCivilStatus() == UserMaritalStatusEnum.SINGLE.getMaritalStatus();
             double percentEssentialsDebts = isSingle && children == 0 ? 0.30 : CalculateBudgetPerChildUtils.getBudgetEssentials(children);
 
             double percentNotEssentialsDebts = (1.0 - percentEssentialsDebts) - 0.30;
@@ -54,10 +67,10 @@ public class UserChartServiceImpl implements UserChartService {
             double percentLimitEconomy = percentsOverall < 1 ? 1 - percentsOverall : 0;
 
             return ChartDebtsDTO.builder()
-                    .essentialsDebts(budget.getBudget() * percentEssentialsDebts)
-                    .notEssentialsDebts(budget.getBudget() * percentNotEssentialsDebts)
-                    .spendingLimitLeisure(budget.getBudget() * percentLeisure)
-                    .spendingLimitEconomy(budget.getBudget() * percentLimitEconomy)
+                    .essentialsDebts(budget.getTotalBudgetAmount() * percentEssentialsDebts)
+                    .notEssentialsDebts(budget.getTotalBudgetAmount() * percentNotEssentialsDebts)
+                    .spendingLimitLeisure(budget.getTotalBudgetAmount() * percentLeisure)
+                    .spendingLimitEconomy(budget.getTotalBudgetAmount() * percentLimitEconomy)
                     .build();
         } catch (Exception ex) {
             log.error("[ERROR] Error to create recommenced chart. More details: {} ", ex.getMessage());
@@ -67,7 +80,7 @@ public class UserChartServiceImpl implements UserChartService {
         return null;
     }
 
-    private ChartDebtsDTO getUserChart(BudgetEntity budget, Long userId) {
+    private ChartDebtsDTO getUserChart(BudgetDetails budget, Long userId) {
         ChartDebtsDTO chartDebts = new ChartDebtsDTO();
         try {
             List<Object[]> expenses = historicRepository.findUserChart(userId);
