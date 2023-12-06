@@ -1,6 +1,5 @@
 package br.com.mybudget.userdashboard.model;
 
-import br.com.mybudget.userdashboard.enuns.UserMaritalStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

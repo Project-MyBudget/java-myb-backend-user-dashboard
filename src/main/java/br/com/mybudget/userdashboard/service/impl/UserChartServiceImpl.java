@@ -1,17 +1,15 @@
 package br.com.mybudget.userdashboard.service.impl;
 
 import java.util.List;
-import java.util.Objects;
 
-import br.com.mybudget.userdashboard.model.BudgetDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.userdashboard.enuns.ExpenseTypeEnum;
 import br.com.mybudget.userdashboard.enuns.UserMaritalStatusEnum;
+import br.com.mybudget.userdashboard.model.BudgetDetails;
 import br.com.mybudget.userdashboard.model.dto.ChartDebtsDTO;
 import br.com.mybudget.userdashboard.model.dto.UserChartEnvelopeDTO;
-import br.com.mybudget.userdashboard.model.entity.BudgetEntity;
 import br.com.mybudget.userdashboard.repository.BudgetRepository;
 import br.com.mybudget.userdashboard.repository.HistoricRepository;
 import br.com.mybudget.userdashboard.service.UserChartService;
@@ -31,7 +29,6 @@ public class UserChartServiceImpl implements UserChartService {
     @Override
     public UserChartEnvelopeDTO getUserDebts(Long userId) {
         BudgetDetails budgetDetails = new BudgetDetails();
-        BudgetEntity budgetEntity = budgetRepository.findByIdUser(userId);
         List<Object[]> objBudgetDetails = budgetRepository.getTotalBudgetDetailsById(userId);
 
         for (Object[] budget : objBudgetDetails) {
