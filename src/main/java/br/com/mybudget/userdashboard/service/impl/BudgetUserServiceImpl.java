@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -19,13 +20,13 @@ public class BudgetUserServiceImpl implements BudgetUserService {
     @Override
     public TotalBudgetDTO getTotalBudgetAmount(Long userId) {
 
-        String totalBudgetAmount = budgetRepository.getTotalBudgetAmountAndValueSavedByIdBudget(userId);
-        if (totalBudgetAmount != null) {
+        List<Object[]> totalBudgetAmount = budgetRepository.getTotalBudgetAmountAndValueSavedByIdBudget(userId);
+        for (Object[] row : totalBudgetAmount) {
             log.info("[USER CHART RESOURCE] Founded Budget Amount.");
             return TotalBudgetDTO
                     .builder()
-                    .totalBudgetAmount(new BigDecimal(totalBudgetAmount.split("-")[0]))
-                    .totalValueSaved(new BigDecimal(totalBudgetAmount.split("-")[1]))
+                    .totalBudgetAmount((double) row[0])
+                    .totalValueSaved((double) row[1])
                     .build();
         }
 

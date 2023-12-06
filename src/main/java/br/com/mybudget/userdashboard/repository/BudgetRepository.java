@@ -30,12 +30,12 @@ public interface BudgetRepository extends JpaRepository<BudgetEntity, Long> {
     List<Object[]> getTotalBudgetDetailsById(long id);
     
     @Query(
-    		value = "SELECT concat(b.BUDGET + b.VALUE_SAVED + e.SALARY, '-', b.VALUE_SAVED) " +
+    		value = "SELECT SUM(b.BUDGET + b.VALUE_SAVED + e.SALARY), b.VALUE_SAVED" +
                     " FROM TB_BUDGET b " +
                     "   JOIN TB_USER u ON u.ID_USER = b.ID_USER " +
                     "   JOIN TB_EMPLOYMENTS e ON e.ID_USER = u.ID_USER " +
                     " WHERE b.ID_USER = ?1 ",
     		nativeQuery = true)
-    String getTotalBudgetAmountAndValueSavedByIdBudget(@Param("id") long id);
+    List<Object[]> getTotalBudgetAmountAndValueSavedByIdBudget(@Param("id") long id);
 }
 	

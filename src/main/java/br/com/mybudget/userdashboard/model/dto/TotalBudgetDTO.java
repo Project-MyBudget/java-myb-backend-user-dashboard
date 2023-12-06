@@ -19,6 +19,6 @@ import lombok.ToString;
 @ToString
 public class TotalBudgetDTO {
 	
-	private BigDecimal totalBudgetAmount;
-	private BigDecimal totalValueSaved;
+	private double totalBudgetAmount;
+	private double totalValueSaved;
 }
